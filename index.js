@@ -27,7 +27,7 @@ p2p.on('metadata', function (metadata) {
       '_id': metadata.infoHash,
       'title': metadata.info.name,
       'size': metadata.info.length,
-      'files': metadata.info.files.map(f => f.path),
+      // 'files': metadata.info.files.map(f => f.path),
       'imported': new Date()
     }).save()
 
