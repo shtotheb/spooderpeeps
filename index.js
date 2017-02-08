@@ -21,8 +21,8 @@ p2p.ignore(function (infohash, rinfo, callback) {
 });
 
 p2p.on('metadata', function (metadata) {
-    console.log(metadata);
 
+    console.log(metadata.info.Dict.name.toString())
     new Torrent({
       '_id': metadata.infoHash,
       'title': metadata.info.Dict.name,
@@ -30,6 +30,7 @@ p2p.on('metadata', function (metadata) {
       'files': metadata.info.Dict.files.map(f => f.path),
       'imported': new Date()
     }).save()
+
 
 });
 
