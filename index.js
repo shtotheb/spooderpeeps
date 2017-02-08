@@ -23,14 +23,13 @@ p2p.ignore(function (infohash, rinfo, callback) {
 p2p.on('metadata', function (metadata) {
     console.log(metadata);
 
-    // new Torrent({
-    //   '_id': metadata.infoHash,
-    //   'title': metadata.name,
-    //   'details': metadata.announce,
-    //   'size': metadata.length,
-    //   'files': metadata.files.map(f => f.path),
-    //   'imported': new Date()
-    // }).save()
+    new Torrent({
+      '_id': metadata.infoHash,
+      'title': metadata.info.Dict.name,
+      'size': metadata.info.Dict.length,
+      'files': metadata.info.Dict.files.map(f => f.path),
+      'imported': new Date()
+    }).save()
 
 });
 
