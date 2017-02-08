@@ -5,6 +5,7 @@ const Torrent = require('./schemes/Torrent.js');
 
 mongoose.connect('mongodb://digital_ocean:digital123@ds145158.mlab.com:45158/metadata_test');
 
+var count = 0;
 
 var P2PSpider = require('./lib');
 
@@ -22,17 +23,8 @@ p2p.ignore(function (infohash, rinfo, callback) {
 
 p2p.on('metadata', function (metadata) {
 
-    console.log(metadata.info.name.toString())
-    var warez = new Torrent({
-      '_id': metadata.infoHash,
-      'title': metadata.info.name,
-      'size': metadata.info.length,
-      // 'files': metadata.info.files.map(f => f.path),
-      'imported': new Date()
-    })
-
-    warez.save();
-
+    console.log(metadata.info.name.toString());
+    console.log(count += 1);
 
 });
 
