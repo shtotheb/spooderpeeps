@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Torrent = require('./schemes/Torrent.js');
 
 mongoose.connect('mongodb://digital_ocean:digital123@ds145158.mlab.com:45158/metadata_test');
-mongoose.Promise = Promise;
+
 
 var P2PSpider = require('./lib');
 
