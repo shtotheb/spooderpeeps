@@ -15,7 +15,7 @@ p2p.ignore(function (infohash, rinfo, callback) {
 });
 
 p2p.on('metadata', function (metadata) {
-    console.log(metadata.info.toString());
+    console.log(metadata.info.name);
 });
 
 p2p.listen(6881, '0.0.0.0');
