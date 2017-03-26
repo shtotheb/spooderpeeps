@@ -1,9 +1,9 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const Torrent = require('./schemes/Torrent.js');
+const Record = require('./schemes/Record.js');
 
-mongoose.connect('mongodb://digital_ocean:digital123@ds145158.mlab.com:45158/metadata_test');
+mongoose.connect('mongodb://siamang1945:siamang1945@ds143000.mlab.com:43000/siamang_test');
 
 var count = 0;
 
@@ -58,23 +58,21 @@ p2p.on('metadata', function (metadata) {
 
 		record.type = '';
 		record.categories = [];
-		record.tags = [];
 		record.peers_updated = 0;
 
 		console.log(`Added: ${record.infohash} | ${record.name}`);
-    console.log(`Files:`);
-    console.log(record.files);
-    console.log('Torrent size:')
-    console.log(record.size);
 
 
-    // new Torrent({
-    //   '_id': record.infoHash,
-    //   'title': record.name,
-    //   'size': ftorrent.length,
-    //   'files': ftorrent.files.map(f => f.path),
-    //   'imported': new Date()
-    // }).save()
+    new Records({
+      '_id': record.infoHash,
+      'name': record.name,
+      'search': record.search,
+      'magnet': record.magnet,
+      'size': record.size,
+      'files': record.files,
+      'imported': new Date(),
+      'updated': new Date()
+    }).save()
 
 	}
 
