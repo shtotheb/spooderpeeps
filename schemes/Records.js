@@ -12,12 +12,12 @@ var RecordSchema = mongoose.Schema({
     leechers: { type: Number, default: 0, index: true }
   },
   files: {
-    path: { type: String, index: true },
-    length: { type: Number, default: 0 }
+    path: { type: [String], default: [], index: true },
+    length: { type: [Number], default: 0 }
   },
   imported: {type: Date, default: Date.now, index: true},
   updated: {type: Date, default: Date.now, index: true}
 });
-var Records = mongoose.model('Record',RecordSchema);
+var Records = mongoose.model('Records',RecordSchema);
 
 module.exports = Records;

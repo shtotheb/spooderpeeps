@@ -1,9 +1,15 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const Record = require('./schemes/Record.js');
+const Records = require('./schemes/Records.js');
 
 mongoose.connect('mongodb://siamang1945:siamang1945@ds143000.mlab.com:43000/siamang_test');
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("Connected to mlab")
+});
 
 var count = 0;
 
@@ -56,23 +62,29 @@ p2p.on('metadata', function (metadata) {
 			});
 		}
 
+    console.log(`Found: ${record.infohash} | ${record.name}`);
+
 		record.type = '';
 		record.categories = [];
 		record.peers_updated = 0;
 
-		console.log(`Added: ${record.infohash} | ${record.name}`);
-
-
-    new Records({
-      '_id': record.infoHash,
+    var newRecord = new Records({
+      '_id': record.infohash,
       'name': record.name,
       'search': record.search,
       'magnet': record.magnet,
       'size': record.size,
-      'files': record.files,
+      'files': record.files.path.map(f => f.path),
       'imported': new Date(),
       'updated': new Date()
-    }).save()
+    });
+
+    console.log(newRecord._id);
+
+    newRecord.save(function (err, newRecord) {
+      if (err) return console.error(err);
+      console.log(newRecord.name, " metadata saved!")
+    });
 
 	}
 
