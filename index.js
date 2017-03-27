@@ -30,7 +30,8 @@ p2p.ignore(function (infohash, rinfo, callback) {
 p2p.on('metadata', function (metadata) {
 	var record = {};
 	if(typeof metadata.info.name !== 'undefined' && typeof metadata.info.files !== 'undefined'){
-
+    record.name = metadata.info.name
+    record.search = record.name.replace(/\.|\_/g, ' ')
     record.size = 0;
 		record.files = [];
 		metadata.info.files.forEach(function(element){
@@ -49,7 +50,7 @@ p2p.on('metadata', function (metadata) {
     var newRecord = new Records({
       '_id': metadata.infohash,
       'name': metadata.info.name.toString(),
-      'search': metadata.info.name.replace(/\.|\_/g, ' '),
+      'search': record.search,
       'magnet': metadata.magnet,
       'size': record.size,
       'files': {
