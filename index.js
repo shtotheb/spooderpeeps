@@ -31,7 +31,7 @@ p2p.on('metadata', function (metadata) {
 	var record = {};
   var exists = false;
   Records.findById(metadata.infohash).exec(exists = true);
-  console.log("Metadata found!!  ", metadata.info.name, " exists = ", exists);
+  console.log("Metadata found!!  ", metadata.info.name.toString(), " exists = ", exists);
 	if(typeof metadata.info.name !== 'undefined' && typeof metadata.info.files !== 'undefined' && exists == false){
 		record.name = metadata.info.name.toString();
 		record.search = record.name.replace(/\.|\_/g, ' ');
