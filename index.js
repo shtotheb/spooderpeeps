@@ -29,29 +29,47 @@ p2p.ignore(function (infohash, rinfo, callback) {
 
 p2p.on('metadata', function (metadata) {
 	var record = {};
-	if(typeof metadata.info.name !== 'undefined' && typeof metadata.info.files !== 'undefined'){
-    record.name = metadata.info.name
-    record.search = record.name.replace(/\.|\_/g, ' ')
+	if(typeof metadata.info.name !== 'undefined'){
+		record.name = metadata.info.name.toString();
+		record.search = record.name.replace(/\.|\_/g, ' ');
+		record.infohash = metadata.infohash;
+		record.magnet = metadata.magnet;
+		record.dht = 1;
     record.size = 0;
-		record.files = [];
-		metadata.info.files.forEach(function(element){
-			try{
-				var temp = {};
-				temp.length = element.length;
-				temp.path = element.path.toString();
-				record.files.push(temp);
-        record.size = record.size + temp.length;
-			}catch(error){
-				console.log(error);
-			}
-		});
 
+		if(typeof metadata.info['file-duration'] !== 'undefined' && metadata.info['file-duration'].length < 100){
+			record.file_duration = metadata.info['file-duration'];
+		}
+
+		if(typeof metadata.info['file-media'] !== 'undefined' && metadata.info['file-media'].length < 100){
+			record.file_media = metadata.info['file-media'];
+		}
+
+		var files = metadata.info.files;
+		if(typeof files !== 'undefined' && files.length < 100){
+			record.files = [];
+			files.forEach(function(element){
+				try{
+					var temp = {};
+					temp.length = element.length;
+					temp.path = element.path.toString();
+					record.files.push(temp);
+          record.size = record.size + temp.length;
+				}catch(error){
+					console.log(error);
+				}
+			});
+		}
+
+		record.type = '';
+		record.categories = [];
+		record.peers_updated = 0;
 
     var newRecord = new Records({
-      '_id': metadata.infohash,
+      '_id': record.infohash,
       'name': metadata.info.name.toString(),
       'search': record.search,
-      'magnet': metadata.magnet,
+      'magnet': record.magnet,
       'size': record.size,
       'files': {
         'path': record.files.map(f => f.path),
@@ -60,7 +78,7 @@ p2p.on('metadata', function (metadata) {
       'imported': new Date(),
       'updated': new Date()
     });
-
+    
     newRecord.save(function (err, newRecord) {
       if (err) return console.error(err);
       console.log(newRecord.name, " metadata saved!")
