@@ -29,8 +29,8 @@ p2p.ignore(function (infohash, rinfo, callback) {
 
 p2p.on('metadata', function (metadata) {
 	var record = {};
-  var exists = true;
-  Records.findById(metadata.infohash).exec(exists = false);
+  var exists = false;
+  Records.findById(metadata.infohash).exec(exists = true);
   console.log("Metadata found!! exists = ", exists);
 	if(typeof metadata.info.name !== 'undefined' && typeof metadata.info.files !== 'undefined' && exists == false){
 		record.name = metadata.info.name.toString();
