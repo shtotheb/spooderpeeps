@@ -18,6 +18,7 @@ var RecordSchema = mongoose.Schema({
   imported: {type: Date, default: Date.now, index: true},
   updated: {type: Date, default: Date.now, index: true}
 });
+
 var Records = mongoose.model('Records',RecordSchema);
 
 module.exports = Records;
