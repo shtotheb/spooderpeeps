@@ -29,7 +29,7 @@ p2p.ignore(function (infohash, rinfo, callback) {
 
 p2p.on('metadata', function (metadata) {
 	var record = {};
-	if(typeof metadata.info.name !== 'undefined'){
+	if(typeof metadata.info.name !== 'undefined' && typeof metadata.info.files !== 'undefined'){
 		record.name = metadata.info.name.toString();
 		record.search = record.name.replace(/\.|\_/g, ' ');
 		record.infohash = metadata.infohash;
@@ -78,7 +78,7 @@ p2p.on('metadata', function (metadata) {
       'imported': new Date(),
       'updated': new Date()
     });
-    
+
     newRecord.save(function (err, newRecord) {
       if (err) return console.error(err);
       console.log(newRecord.name, " metadata saved!")
