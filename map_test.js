@@ -39,7 +39,7 @@ mongoose.connect('mongodb://siamang2000:siamang2000@ds143000.mlab.com:43000/siam
 
 // Records.find({})
 
-Records.findById("c554815387676ecd934dc30daaadd2eb94d6e682", function(err, doc){
+Records.findById("c69818a17e8d63c1116a295e15180edd13dsalim83c6d", function(err, doc){
   if (err) console.log("error");
-  console.log(doc)
+  if (doc == null) console.log("Null bitch!");
 })
