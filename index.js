@@ -18,6 +18,10 @@ p2p.ignore(function (infohash, rinfo, callback) {
     callback(theInfohashIsExistsInDatabase);
 });
 
+var savedCallback = function(name) {
+  console.log(name);
+}
+
 p2p.on('metadata', function (metadata) {
 
   if(typeof metadata.info.name !== 'undefined' && typeof metadata.info.files !== 'undefined'){
@@ -32,21 +36,29 @@ p2p.on('metadata', function (metadata) {
     });
 
 
-    Records.findByIdAndUpdate( metadata.infohash, {
-      '_id': metadata.infohash,
-      'name': metadata.info.name.toString(),
-      'search': tempSearch.replace(/\.|\_/g, ' '),
-      'magnet': metadata.magnet,
-      'size': record,
-      'files': {
-        'path': metadata.info.files.map(f => f.path),
-        'length': metadata.info.files.map(f => f.length)
-      },
+    Records.findByIdAndUpdate(
+      metadata.infohash, {
+        '_id': metadata.infohash,
+        'name': metadata.info.name.toString(),
+        'search': tempSearch.replace(/\.|\_/g, ' '),
+        'magnet': metadata.magnet,
+        'size': record,
+        'files': {
+          'path': metadata.info.files.map(f => f.path),
+          'length': metadata.info.files.map(f => f.length)
+        },
         'imported': new Date(),
         'updated': new Date()
-    },
-    { upsert: true}
-  )
+      },
+      {upsert: true, setDefaultsOnInsert: true, new: true, runValidators: true },
+      function (err, doc) {
+          if (err) {
+              console.log(err)
+          } else {
+              console.log("Metadata = { ", metadata.info.name.toString(), " } is Saved!")
+          }
+      }
+    )
 
   }
 

@@ -30,22 +30,33 @@ console.log(reformattedArray3)
 console.log(record)
 
 
-// 'use strict';
-//
-// const mongoose = require('mongoose').set('debug', true);
-// const Records = require('./schemes/Records.js');
-//
-// mongoose.connect('mongodb://siamang2000:siamang2000@ds143000.mlab.com:43000/siamang_test');
-//
-// // var db = mongoose.connection;
-// // db.on('error', console.error.bind(console, 'connection error:'));
-// // db.once('open', function() {
-// //   console.log("Connected to mlab")
-// // });
-//
-// // Records.find({})
-//
-// Records.findById("c69818a17e8d63c1116a295e15180edd13dsalim83c6d", function(err, doc){
-//   if (err) console.log("error");
-//   if (doc == null) console.log("Null bitch!");
-// })
+'use strict';
+
+const mongoose = require('mongoose').set('debug', true);
+const Records = require('./schemes/Records.js');
+
+mongoose.connect('mongodb://siamang2000:siamang2000@ds143000.mlab.com:43000/siamang_test');
+
+var savedCallback = function(name) {
+  console.log(name);
+}
+
+Records.findById("c69818a17e8d63c1116a295e15180edd13d83c6d", function(err, doc){
+  if (err) {
+    reject(err)
+  }
+    console.log(doc)
+})
+
+Records.findByIdAndUpdate(
+    "c69818a17e8d63c1116a295e15180edd13d83c6dPISS", // find a document with that filter
+    {name: 'Milas'}, // document to insert when nothing was found
+    {upsert: true, setDefaultsOnInsert: true, new: true, runValidators: true }, // options
+    function (err, doc) { // callback
+        if (err) {
+            console.log(err)
+        } else {
+            console.log(doc)
+        }
+    }
+);
