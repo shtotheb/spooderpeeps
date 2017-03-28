@@ -1,11 +1,5 @@
-watcher.on("add", (metadata) => {
+watcher.on("add", (fsfile) => {
   return new Promise((resolve, reject) => {
-    Records.findById(metadata.infohash, function(err, doc){
-      if (err) {
-        reject(err)
-      }
-      resolve(ftorrent);
-    })
     rt(fsfile, (err, ftorrent) => {
       if(err) {
         reject(err)
