@@ -26,7 +26,7 @@ p2p.ignore(function (infohash, rinfo, callback) {
     callback(theInfohashIsExistsInDatabase);
 });
 
-p2p.on("add", (metadata) => {
+p2p.on("metadata", (metadata) => {
   return new Promise((resolve, reject) => {
     Records.findById(metadata.infohash, function(err, doc){
       if (err) {
