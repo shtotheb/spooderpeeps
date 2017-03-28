@@ -29,7 +29,8 @@ p2p.ignore(function (infohash, rinfo, callback) {
 p2p.on('metadata', function (metadata) {
   var exists = true;
 
-  var search = metadata.info.name.replace(/\.|\_/g, ' ')
+  var search = metadata.info.name;
+  search = search.replace(/\.|\_/g, ' ')
 
   Records.findById(metadata.infohash, function(err, doc){
     if (err) console.log(err);
