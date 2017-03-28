@@ -57,7 +57,7 @@ p2p.on('metadata', function (metadata) {
     var newRecord = new Records({
       '_id': metadata.infohash,
       'name': metadata.info.name.toString(),
-      'search': this.name.replace(/\.|\_/g, ' ');,
+      'search': metadata.info.name.toString().replace(/\.|\_/g, ' ');,
       'magnet': metadata.magnet,
       'size': record,
       'files': {
