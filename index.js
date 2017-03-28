@@ -37,13 +37,13 @@ p2p.on('metadata', function (metadata) {
 
   console.log("Metadata found!!  ", metadata.info.name.toString(), " exists = ", exists);
 
-	if(typeof metadata.info.name !== 'undefined' && typeof metadata.info.files !== 'undefined' && exists == false){
+	if(typeof metadata.info.name !== 'undefined' && typeof metadata.info.files !== 'undefined'){
 
     record.size = 0;
 
 		if(typeof metadata.info.files !== 'undefined' && metadata.info.files.length < 100){
 			var record = [];
-			files.forEach(function(element){
+			metadata.info.files.forEach(function(element){
           record.size = record.size + element.length;
 			});
 		}
