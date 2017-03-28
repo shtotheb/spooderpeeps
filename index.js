@@ -30,7 +30,7 @@ p2p.on('metadata', function (metadata) {
   var exists = true;
 
   var tempSearch = metadata.info.name.toString();
-  search = tempSearch.replace(/\.|\_/g, ' ')
+  var search = tempSearch.replace(/\.|\_/g, ' ')
 
   Records.findById(metadata.infohash, function(err, doc){
     if (err) console.log(err);
