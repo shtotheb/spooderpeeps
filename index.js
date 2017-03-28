@@ -47,21 +47,9 @@ p2p.on('metadata', function (metadata) {
 		if(typeof files !== 'undefined' && files.length < 100){
 			record.files = [];
 			files.forEach(function(element){
-				try{
-					var temp = {};
-					temp.length = element.length;
-					temp.path = element.path.toString();
-					record.files.push(temp);
-          record.size = record.size + temp.length;
-				}catch(error){
-					console.log(error);
-				}
+          record.size = record.size + element.length;
 			});
 		}
-
-		record.type = '';
-		record.categories = [];
-		record.peers_updated = 0;
 
     var newRecord = new Records({
       '_id': metadata.infohash,
