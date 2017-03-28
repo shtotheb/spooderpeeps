@@ -30,7 +30,7 @@ p2p.ignore(function (infohash, rinfo, callback) {
 p2p.on('metadata', function (metadata) {
 	var record = {};
   var exists = true;
-  
+
   Records.findById(metadata.infohash, function(err, doc){
     if (err) console.log(err);
     console.log("doc =  ", doc);
@@ -40,10 +40,9 @@ p2p.on('metadata', function (metadata) {
   console.log("Metadata found!!  ", metadata.info.name.toString(), " exists = ", exists);
 
 	if(typeof metadata.info.name !== 'undefined' && typeof metadata.info.files !== 'undefined' && exists == false){
-		record.name = metadata.info.name.toString();
-		record.search = metadata.info.name.replace(/\.|\_/g, ' ');
-		record.infohash = metadata.infohash;
-		record.magnet = metadata.magnet;
+		// record.search = metadata.info.name.replace(/\.|\_/g, ' ');
+		// record.infohash = metadata.infohash;
+		// record.magnet = metadata.magnet;
 		record.dht = 1;
     record.size = 0;
 
@@ -76,10 +75,10 @@ p2p.on('metadata', function (metadata) {
 		record.peers_updated = 0;
 
     var newRecord = new Records({
-      '_id': record.infohash,
+      '_id': metadata.infohash,
       'name': metadata.info.name.toString(),
-      'search': record.search,
-      'magnet': record.magnet,
+      'search': metadata.info.name.replace(/\.|\_/g, ' '),
+      'magnet': metadata.magnet,
       'size': record.size,
       'files': {
         'path': record.files.map(f => f.path),
