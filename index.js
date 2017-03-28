@@ -35,12 +35,14 @@ p2p.on("metadata", (metadata) => {
       }
       if (doc ===  null) {
         exists = false;
+        console.log("Starts");
         resolve(metadata);
       };
     })
   })
   .then(metadata => {
     if(typeof metadata.info.name !== 'undefined' && typeof metadata.info.files !== 'undefined' && exists === false){
+      console.log("Then");
       var tempSearch = metadata.info.name.toString();
       var record = 0;
 
