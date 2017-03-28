@@ -30,7 +30,6 @@ p2p.on('metadata', function (metadata) {
   var exists = true;
 
   var tempSearch = metadata.info.name.toString();
-  var search = tempSearch.replace(/\.|\_/g, ' ');
 
   Records.findById(metadata.infohash, function(err, doc){
     if (err) console.log(err);
@@ -57,7 +56,7 @@ p2p.on('metadata', function (metadata) {
     var newRecord = new Records({
       '_id': metadata.infohash,
       'name': metadata.info.name.toString(),
-      'search': metadata.info.name.toString().replace(/\.|\_/g, ' ');,
+      'search': tempSearch.replace(/\.|\_/g, ' '),
       'magnet': metadata.magnet,
       'size': record,
       'files': {
