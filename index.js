@@ -8,8 +8,11 @@ mongoose.connect('mongodb://siamang1945:siamang1945@ds143000.mlab.com:43000/siam
 var P2PSpider = require('./lib');
 
 var p2p = P2PSpider({
-    nodesMaxSize: 200,   // be careful
-    maxConnections: 400, // be careful
+    // nodesMaxSize: 200,   // be careful
+    // maxConnections: 400, // be careful
+    // timeout: 5000
+    nodesMaxSize: 20000,   // be careful
+    maxConnections: 40000, // be careful
     timeout: 5000
 });
 
