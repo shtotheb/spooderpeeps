@@ -22,13 +22,11 @@ var p2p = P2PSpider({
 });
 
 p2p.ignore(function (infohash, rinfo, callback) {
-    // false => always to download the metadata even though the metadata is exists.
     var theInfohashIsExistsInDatabase = false;
     callback(theInfohashIsExistsInDatabase);
 });
 
 p2p.on('metadata', function (metadata) {
-	var record = {};
   var exists = true;
 
   Records.findById(metadata.infohash, function(err, doc){
@@ -43,9 +41,8 @@ p2p.on('metadata', function (metadata) {
 
     record.size = 0;
 
-		var files = metadata.info.files;
-		if(typeof files !== 'undefined' && files.length < 100){
-			record.files = [];
+		if(typeof metadata.info.files !== 'undefined' && metadata.info.files.length < 100){
+			var record = [];
 			files.forEach(function(element){
           record.size = record.size + element.length;
 			});
