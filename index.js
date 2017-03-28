@@ -28,12 +28,13 @@ p2p.ignore(function (infohash, rinfo, callback) {
 
 p2p.on("metadata", (metadata) => {
   return new Promise((resolve, reject) => {
+    var exists = true;
     Records.findById(metadata.infohash, function(err, doc){
       if (err) {
         reject(err)
       }
       if (doc ===  null) {
-        exists=false;
+        exists = false;
         resolve(metadata);
       };
     })
