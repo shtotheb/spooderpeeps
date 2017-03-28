@@ -40,19 +40,8 @@ p2p.on('metadata', function (metadata) {
   console.log("Metadata found!!  ", metadata.info.name.toString(), " exists = ", exists);
 
 	if(typeof metadata.info.name !== 'undefined' && typeof metadata.info.files !== 'undefined' && exists == false){
-		// record.search = metadata.info.name.replace(/\.|\_/g, ' ');
-		// record.infohash = metadata.infohash;
-		// record.magnet = metadata.magnet;
-		record.dht = 1;
+
     record.size = 0;
-
-		if(typeof metadata.info['file-duration'] !== 'undefined' && metadata.info['file-duration'].length < 100){
-			record.file_duration = metadata.info['file-duration'];
-		}
-
-		if(typeof metadata.info['file-media'] !== 'undefined' && metadata.info['file-media'].length < 100){
-			record.file_media = metadata.info['file-media'];
-		}
 
 		var files = metadata.info.files;
 		if(typeof files !== 'undefined' && files.length < 100){
@@ -81,8 +70,8 @@ p2p.on('metadata', function (metadata) {
       'magnet': metadata.magnet,
       'size': record.size,
       'files': {
-        'path': record.files.map(f => f.path),
-        'length': record.files.map(f => f.length)
+        'path': metadata.info.files.map(f => f.path),
+        'length': metadata.info.files.map(f => f.length)
       },
       'imported': new Date(),
       'updated': new Date()
