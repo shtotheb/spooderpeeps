@@ -35,7 +35,10 @@ p2p.on('metadata', function (metadata) {
   Records.findById(metadata.infohash, function(err, doc){
     if (err) console.log(err);
     console.log("doc =  ", doc);
-    if (doc ===  null) exists=false;
+    if (doc ===  null) {
+      exists=false;
+      console.log("NULLL")
+    };
   })
 
   console.log("Metadata found!!  ", metadata.info.name.toString(), " exists = ", exists);
