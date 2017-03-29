@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 const mongoose = require('mongoose');
 const Records = require('./schemes/Records.js');
 
@@ -11,7 +13,6 @@ var inactivateFormats = ['.wmv', '.wma', '.z'];
 var search = function(){
   Records.find({}, function(err, torrents) {
     if (err) res.send(err);
-    console.log(torrents);
     return(torrents);
   }).limit(10)
   .then( function (torrents) {
@@ -38,12 +39,27 @@ var categorize = function(torrents){
 
     torrents.forEach(function(element){
       try{
-        console.log(element.name)
+        var record = element;
+        results[element.infohash] = {};
+        results[element.infohash].type = '';
+        results[element.infohash].categories = [];
+        results[element.infohash].tags = [];
+        var files = [];
+        if(typeof element.files != 'undefined'){
+            for(var key in element.files){
+                files.push(element.files[key].path);
+            }
+        }
+        files.push(element.name);
+        for(var j = 0; j < files.length; j++){
+            var file = files[j];
+        }
+
       }catch(error){
         console.log(error);
       }
     });
-
+    update(results);
 }
 
 search();
