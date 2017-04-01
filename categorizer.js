@@ -5,13 +5,15 @@ mongoose.connect('mongodb://siamang1945:siamang1945@ds143000.mlab.com:43000/siam
 
 var videoRegex = /(.3g2|.3gp|.amv|.asf|.avi|.drc|.f4a|.f4b|.f4p|.f4v|.flv|.gif|.gifv|.m2v|.m4p|.m4v|.mkv|.mng|.mov|.mp2|.mp4|.mpe|.mpeg|.mpg|.mpv|.mxf|.net|.nsv|.ogv|.qt|.rm|.rmvb|.roq|.svi|.vob|.webm|.wmv|.yuv)$/
 var audioRegex = /(.aa|.aac|.aax|.act|.aiff|.amr|.ape|.au|.awb|.dct|.dss|.dvf|.flac|.gsm|.iklax|.ivs|.m4a|.m4b|.mmf|.mp3|.mpc|.msv|.ogg|.opus|.ra|.raw|.sln|.tta|.vox|.wav|.wma|.wv)$/
-var documentRegex = /(.cbr|.cbz|.cb7|.cbt|.cba|.djvu|.epub|.fb2|.ibook|.azw|.lit|.prc|.mobi|.pdb|.pdb|.oxps|.xps)$/
+var documentRegex = /(.cbr|.cbz|.cb7|.cbt|.cba|.djvu|.epub|.fb2|.ibook|.azw|.lit|.prc|.mobi|.pdf|.pdb|.oxps|.xps)$/
+
+var count = 0;
 
 var search = function(){
-  Records.find({}, function(err, torrents) {
-    if (err) res.send(err);
+  Records.find({}, {}, {sort : {imported : -1}}, function(err, torrents) {
+    if (err) console.log(err);
     return(torrents);
-  }).limit(100)
+  }).limit(2000)
   .then( function (torrents) {
     if(torrents.length == 0){
         setTimeout(function(){
@@ -33,31 +35,45 @@ var search = function(){
 
 var categorize = function(torrents){
     var results = {};
-
     torrents.forEach(function(element){
       try{
-        var record = element;
-        results[element.infohash] = {};
-        results[element.infohash].categories = '';
-        results[element.infohash].tags = [];
-        var filez = [];
+        results.infohash = element._id;
+        results.categories = '';
+        results.tags = [];
+        var fileArray = [];
         if(typeof element.files != 'undefined'){
             for(var i = 0; i < element.files.path.length; i++){
-                filez.push(element.files.path[i]);
+                fileArray.push(element.files.path[i]);
             }
         }
-        for(var j = 0; j < filez.length; j++){
-            var file = filez[j];
-            results[element.infohash] = getType(file, results[element.infohash]);
+        for(var j = 0; j < fileArray.length; j++){
+            var file = fileArray[j];
+            results = getType(file, results);
         }
 
       }catch(error){
         console.log(error);
       }
-
-      console.log(element.name, " === ", results[element.infohash].categories)
+      update(results);
     });
-    // update(results);
+    search();
+}
+
+var update = function(results){
+    Records.findByIdAndUpdate(
+      results.infohash, {
+        'categories': results.categories,
+        'updated': new Date()
+      },
+      {upsert: true, setDefaultsOnInsert: true, new: true, runValidators: true },
+      function (err, doc) {
+          if (err) {console.log(err)}
+          else {
+            console.log("Metadata = { ", doc.name, " } of type = ", doc.categories, "is Saved!");
+            console.log(count++);
+          }
+      }
+    )
 }
 
 var getType = function(file, element){
