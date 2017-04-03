@@ -1,6 +1,7 @@
 var Client = require('bittorrent-tracker');
 const mongoose = require('mongoose');
 const Records = require('./schemes/Records.js');
+
 mongoose.connect('mongodb://siamang1945:siamang1945@ds143000.mlab.com:43000/siamang_test');
 
 var search = function(){
@@ -16,6 +17,21 @@ var search = function(){
       console.log(err);
     }
   );
+}
+
+var scrape = function(hashes){
+    var requiredOpts = {
+        infoHash: hashes,
+        announce: ['udp://tracker.coppersurfer.tk:6969/announce']
+    };
+    Client.scrape(requiredOpts, function(error, results){
+        if(error){
+            console.log(error);
+        }else{
+            console.log('got peer info for torrents');
+            console.log(results)
+        }
+    });
 }
 
 search();
