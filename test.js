@@ -15,3 +15,25 @@ var file = 'Shert.yuv';
 if(videoRegex.test(file) == true){
   console.log("VIDEO");
 }
+
+var array = [];
+  array[1] = "S";
+  array[2] = "H";
+  array[3] = "I";
+  array[4] = "T";
+
+array.forEach(function(element){
+  console.log(element)
+})
+
+console.log(array)
+
+var navActive = new Map;
+navActive.set('all', 'active');
+navActive.set('video', 'inactive');
+navActive.set('audio', 'inactive');
+navActive.set('doc', 'inactive');
+navActive.set('exe', 'inactive');
+navActive.set('other', 'inactive');
+
+console.log(navActive);
