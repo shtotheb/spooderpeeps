@@ -11,7 +11,6 @@ var search = function(){
   }).limit(50)
   .then( function (torrents) {
     hashes = torrents.map(f => f._id);
-    console.log('got hashes for torrents = ', hashes);
     scrape(hashes);
   }, function (err) {
       console.log(err);
@@ -28,10 +27,32 @@ var scrape = function(hashes){
         if(error){
             console.log(error);
         }else{
-            console.log('got peer info for torrents');
-            console.log(results)
+            update(results);
         }
     });
+}
+
+var update = function(results){
+  for (var key in results){
+    Records.findByIdAndUpdate(
+      key, {
+        'swarm': {
+          'seeders': results[key].complete,
+          'leechers': results[key].incomplete
+        },
+        'updated': new Date()
+
+      },
+      {upsert: true, setDefaultsOnInsert: true, new: true, runValidators: true },
+      function (err, doc) {
+          if (err) {console.log(err)}
+          else {
+            console.log( doc.name, " SEEDERS = ", doc.swarm.seeders, "LEECHERS = ", doc.swarm.leechers);
+          }
+      }
+    )
+  }
+  search();
 }
 
 search();

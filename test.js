@@ -37,3 +37,41 @@ navActive.set('exe', 'inactive');
 navActive.set('other', 'inactive');
 
 console.log(navActive);
+
+var torrents = {
+  b134d4c1165cb9feb6ee9d3f3bfefb5d5142924c:
+   { announce: 'udp://tracker.coppersurfer.tk:6969/announce',
+     infoHash: 'b134d4c1165cb9feb6ee9d3f3bfefb5d5142924c',
+     complete: 0,
+     downloaded: 86,
+     incomplete: 5 },
+  ed5fadf03f9dfd9c2efbbfebbd5132509c20fcf1:
+   { announce: 'udp://tracker.coppersurfer.tk:6969/announce',
+     infoHash: 'ed5fadf03f9dfd9c2efbbfebbd5132509c20fcf1',
+     complete: 1,
+     downloaded: 0,
+     incomplete: 0 },
+  ed4aac5cbf9030ac66f725057148e03f8af89607:
+   { announce: 'udp://tracker.coppersurfer.tk:6969/announce',
+     infoHash: 'ed4aac5cbf9030ac66f725057148e03f8af89607',
+     complete: 0,
+     downloaded: 0,
+     incomplete: 0 },
+  '6fdecc7d3762730ac0bf52912b255783ebf1699d':
+   { announce: 'udp://tracker.coppersurfer.tk:6969/announce',
+     infoHash: '6fdecc7d3762730ac0bf52912b255783ebf1699d',
+     complete: 1,
+     downloaded: 435,
+     incomplete: 0 },
+  acd5e67e093b1cc98d340c3628b34b712105759c:
+   { announce: 'udp://tracker.coppersurfer.tk:6969/announce',
+     infoHash: 'acd5e67e093b1cc98d340c3628b34b712105759c',
+     complete: 0,
+     downloaded: 0,
+     incomplete: 3 }
+}
+
+for (var key in torrents){
+  console.log(torrents[key].complete);
+  console.log(torrents[key].incomplete);
+}
