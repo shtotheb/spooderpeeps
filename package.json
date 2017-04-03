@@ -14,6 +14,7 @@
   "dependencies": {
     "bencode": "^0.7.0",
     "bitfield": "^1.1.2",
+    "bittorrent-tracker": "^9.1.0",
     "mongoose": "^4.8.1"
   },
   "keywords": [
