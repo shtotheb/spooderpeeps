@@ -61,6 +61,7 @@ p2p.on('metadata', function (metadata) {
         function (err, doc) {
             if (err) {
                 console.log(err)
+                p2p.listen(6881, '0.0.0.0');
             } else {
                 console.log("Metadata = { ", metadata.info.name.toString(), " } is Saved!")
             }

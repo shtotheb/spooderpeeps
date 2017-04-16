@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Records = require('./schemes/Records.js');
 
-mongoose.connect('mongodb://siamang1945:siamang1945@ds143000.mlab.com:43000/siamang_test');
+// mongoose.connect('mongodb://siamang1945:siamang1945@ds143000.mlab.com:43000/siamang_test');
 
 var videoRegex = /(.3g2|.3gp|.amv|.asf|.avi|.drc|.f4a|.f4b|.f4p|.f4v|.flv|.gif|.gifv|.m2v|.m4p|.m4v|.mkv|.mng|.mov|.mp2|.mp4|.mpe|.mpeg|.mpg|.mpv|.mxf|.net|.nsv|.ogv|.qt|.rm|.rmvb|.roq|.svi|.vob|.webm|.wmv|.yuv)$/
 var audioRegex = /(.aa|.aac|.aax|.act|.aiff|.amr|.ape|.au|.awb|.dct|.dss|.dvf|.flac|.gsm|.iklax|.ivs|.m4a|.m4b|.mmf|.mp3|.mpc|.msv|.ogg|.opus|.ra|.raw|.sln|.tta|.vox|.wav|.wma|.wv)$/
@@ -12,17 +12,18 @@ var executableRegex = /(.exe)$/
 var count = 1;
 
 var search = function(){
-  Records.find({ categories: 'Unknown' }, {}, {sort : {updated : 1}}, function(err, torrents) {
-    if (err) console.log(err);
-    return(torrents);
-  }).limit(1000)
-  .then( function (torrents) {
-    categorize(torrents);
-  }, function (err) {
-      console.log(err);
-    }
-  );
-
+  mongoose.connect("mongodb://datamang:XIoEOHens4fyLzJyk6UXj3eqHZ0SVoSoOfVswKUaWXQSAPbad4T2cfNLmZcqpDx3Z9iJsQ6OIBX77OEpJ1fF5g==@datamang.documents.azure.com:10250/mangdata/?ssl=true", function (err, db) {
+    Records.find({ categories: 'Unknown' }, {}, {sort : {updated : 1}}, function(err, torrents) {
+      if (err) console.log(err);
+      return(torrents);
+    }).limit(1000)
+    .then( function (torrents) {
+      categorize(torrents);
+    }, function (err) {
+        console.log(err);
+      }
+    );
+  });
 }
 
 var categorize = function(torrents){
