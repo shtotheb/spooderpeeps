@@ -3,7 +3,11 @@
 const mongoose = require('mongoose');
 const Records = require('./schemes/Records.js');
 
-mongoose.connect('mongodb://siamang1945:siamang1945@ds143000.mlab.com:43000/siamang_test');
+// mongoose.connect('mongodb://siamang1945:siamang1945@ds143000.mlab.com:43000/siamang_test');
+// mongoose.connect('mongodb://datamang:XIoEOHens4fyLzJyk6UXj3eqHZ0SVoSoOfVswKUaWXQSAPbad4T2cfNLmZcqpDx3Z9iJsQ6OIBX77OEpJ1fF5g==@datamang.documents.azure.com:10250/mangdata/?ssl=true')
+
+// var mongoClient = require("mongodb").MongoClient;
+
 
 var P2PSpider = require('./lib');
 
@@ -38,30 +42,32 @@ p2p.on('metadata', function (metadata) {
       record = record + element.length;
     });
 
-
-    Records.findByIdAndUpdate(
-      metadata.infohash, {
-        '_id': metadata.infohash,
-        'name': metadata.info.name.toString(),
-        'search': tempSearch.replace(/\.|\_/g, ' '),
-        'magnet': metadata.magnet,
-        'size': record,
-        'files': {
-          'path': metadata.info.files.map(f => f.path),
-          'length': metadata.info.files.map(f => f.length)
+    mongoose.connect("mongodb://datamang:XIoEOHens4fyLzJyk6UXj3eqHZ0SVoSoOfVswKUaWXQSAPbad4T2cfNLmZcqpDx3Z9iJsQ6OIBX77OEpJ1fF5g==@datamang.documents.azure.com:10250/mangdata/?ssl=true", function (err, db) {
+      Records.findByIdAndUpdate(
+        metadata.infohash, {
+          '_id': metadata.infohash,
+          'name': metadata.info.name.toString(),
+          'search': tempSearch.replace(/\.|\_/g, ' '),
+          'magnet': metadata.magnet,
+          'size': record,
+          'files': {
+            'path': metadata.info.files.map(f => f.path),
+            'length': metadata.info.files.map(f => f.length)
+          },
+          'imported': new Date(),
+          'updated': new Date()
         },
-        'imported': new Date(),
-        'updated': new Date()
-      },
-      {upsert: true, setDefaultsOnInsert: true, new: true, runValidators: true },
-      function (err, doc) {
-          if (err) {
-              console.log(err)
-          } else {
-              console.log("Metadata = { ", metadata.info.name.toString(), " } is Saved!")
-          }
-      }
-    )
+        {upsert: true, setDefaultsOnInsert: true, new: true, runValidators: true },
+        function (err, doc) {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log("Metadata = { ", metadata.info.name.toString(), " } is Saved!")
+            }
+        }
+      )
+    });
+
 
   }
 
