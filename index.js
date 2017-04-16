@@ -3,8 +3,11 @@
 const mongoose = require('mongoose');
 const Records = require('./schemes/Records.js');
 
+var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
+                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
+
 // mongoose.connect('mongodb://siamang1945:siamang1945@ds143000.mlab.com:43000/siamang_test');
-// mongoose.connect('mongodb://datamang:XIoEOHens4fyLzJyk6UXj3eqHZ0SVoSoOfVswKUaWXQSAPbad4T2cfNLmZcqpDx3Z9iJsQ6OIBX77OEpJ1fF5g==@datamang.documents.azure.com:10250/mangdata/?ssl=true')
+mongoose.connect('mongodb://datamang:XIoEOHens4fyLzJyk6UXj3eqHZ0SVoSoOfVswKUaWXQSAPbad4T2cfNLmZcqpDx3Z9iJsQ6OIBX77OEpJ1fF5g==@datamang.documents.azure.com:10250/mangdata/?ssl=true', options)
 
 // var mongoClient = require("mongodb").MongoClient;
 
@@ -42,8 +45,7 @@ p2p.on('metadata', function (metadata) {
       record = record + element.length;
     });
 
-    mongoose.connect("mongodb://datamang:XIoEOHens4fyLzJyk6UXj3eqHZ0SVoSoOfVswKUaWXQSAPbad4T2cfNLmZcqpDx3Z9iJsQ6OIBX77OEpJ1fF5g==@datamang.documents.azure.com:10250/mangdata/?ssl=true", function (err, db) {
-      Records.findByIdAndUpdate(
+    Records.findByIdAndUpdate(
         metadata.infohash, {
           '_id': metadata.infohash,
           'name': metadata.info.name.toString(),
@@ -61,13 +63,11 @@ p2p.on('metadata', function (metadata) {
         function (err, doc) {
             if (err) {
                 console.log(err)
-                p2p.listen(6881, '0.0.0.0');
             } else {
                 console.log("Metadata = { ", metadata.info.name.toString(), " } is Saved!")
             }
         }
       )
-    });
 
 
   }
