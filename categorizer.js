@@ -8,22 +8,22 @@ var audioRegex = /(.aa|.aac|.aax|.act|.aiff|.amr|.ape|.au|.awb|.dct|.dss|.dvf|.f
 var documentRegex = /(.cbr|.cbz|.cb7|.cbt|.cba|.djvu|.epub|.fb2|.ibook|.azw|.lit|.prc|.mobi|.pdf|.pdb|.oxps|.xps)$/
 var executableRegex = /(.exe)$/
 
+var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
+                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
 
-var count = 1;
+mongoose.connect('mongodb://datamang:XIoEOHens4fyLzJyk6UXj3eqHZ0SVoSoOfVswKUaWXQSAPbad4T2cfNLmZcqpDx3Z9iJsQ6OIBX77OEpJ1fF5g==@datamang.documents.azure.com:10250/mangdata/?ssl=true', options)
 
 var search = function(){
-  mongoose.connect("mongodb://datamang:XIoEOHens4fyLzJyk6UXj3eqHZ0SVoSoOfVswKUaWXQSAPbad4T2cfNLmZcqpDx3Z9iJsQ6OIBX77OEpJ1fF5g==@datamang.documents.azure.com:10250/mangdata/?ssl=true", function (err, db) {
     Records.find({ categories: 'Unknown' }, {}, {sort : {updated : 1}}, function(err, torrents) {
       if (err) console.log(err);
       return(torrents);
-    }).limit(1000)
+    }).limit(100)
     .then( function (torrents) {
       categorize(torrents);
     }, function (err) {
         console.log(err);
       }
     );
-  });
 }
 
 var categorize = function(torrents){
@@ -64,7 +64,6 @@ var update = function(results){
           if (err) {console.log(err)}
           else {
             console.log("Metadata = { ", doc.name, " } of type = ", doc.categories, "is Saved!");
-            console.log(count++);
           }
       }
     )
