@@ -29,11 +29,13 @@ var savedCallback = function(name) {
   console.log(name);
 }
 
+var count = 0
+
 p2p.on('metadata', function (metadata) {
 
   if(typeof metadata.info.name !== 'undefined' && typeof metadata.info.files !== 'undefined'){
 
-    console.log("Metadata found!!  ", metadata.info.name.toString());
+    console.log("Metadata number : ", count, " ", metadata.info.name.toString());
 
     var tempSearch = metadata.info.name.toString();
     var record = 0;
@@ -58,11 +60,7 @@ p2p.on('metadata', function (metadata) {
         },
         {upsert: true, setDefaultsOnInsert: true, new: true, runValidators: true },
         function (err, doc) {
-            if (err) {
-                console.log(err)
-            } else {
-                console.log("Metadata = { ", metadata.info.name.toString(), " } is Saved!")
-            }
+            if (err) {console.log(err)}
         }
       )
 
